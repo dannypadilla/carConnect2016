@@ -51,30 +51,30 @@ var handlers = {
         this.emit('CarStatus');
     },
     'Fuel Level': function() {
-	
+
     },
     'WhereIsMyCar': function() {
-	
+
     },
     'CarHealth': function() {
-	
+
     },
     'Accident': function() {
-	
+
     },
     'Dead': function() {
-	
+
     },
     'Life': function() {
-	
+
     },
     'CarStatus': function () {
 	var parentOfThis = this;
 	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
 
 	    if (typeof(err) != "undefined") {
-		console.log("login error");
-		return;
+		      console.log("login error");
+		      return;
 	    }
 
 	    // car you are searching for
@@ -126,9 +126,9 @@ var handlers = {
 			var accidentCheck = vehicles[count].AccidentState.Value;
 			var readAccidentCheck;
 			if (accidentCheck) {
-			    alexaReadingString += "Your car has been in an accident. ";
+			    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
 			}
-			
+
 			parentOfThis.emit(':tell', alexaReadingString);
 		    }
 		    count++;
