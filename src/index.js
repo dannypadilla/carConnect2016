@@ -116,7 +116,7 @@ var handlers = {
             console.log(alexaReadingString);
 
 			// diagnostics
-			checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
+			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
 			var instructions = checkEngineLightStatus.Instructions.toString();
 			var description = checkEngineLightStatus.Description.toString();
 			var code = checkEngineLightStatus.Code.toString();
