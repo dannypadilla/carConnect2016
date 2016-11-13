@@ -1,4 +1,4 @@
-'use strict';
+'use strict';OA
 var Alexa = require('alexa-sdk');
 var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 
@@ -7,6 +7,7 @@ var alexaReadingString;
 var fuelEfficiency;
 var checkEngineLightStatus;
 var fuelLevel;
+
 
 // for kilometers to miles; 1km = 0.621371 miles
 var kilometersToMiles = 0.621371;
@@ -101,7 +102,7 @@ var handlers = {
 
 			// fuel level
 			fuelLevel = vehicles[count].FuelLevel.Value;
-			var readFuelLevel = "Current fuel level is at " + fuelLevel.toString() + " percent. ";
+			var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
 			alexaReadingString += readFuelLevel;
 
 			// fuel left
@@ -110,10 +111,10 @@ var handlers = {
 			alexaReadingString += readFuelLevel;
 
 			// diagnostics
-			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
-			var instructions = checkEngineLightStatus.Instructions;
-			var description = checkEngineLightStatus.Description;
-			var code = checkEngineLightStatus.Code;
+			checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
+			var instructions = checkEngineLightStatus.Instructions.toString();
+			var description = checkEngineLightStatus.Description.toString();
+			var code = checkEngineLightStatus.Code.toString();
 			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
 			alexaReadingString += readDiagnostics;
 
