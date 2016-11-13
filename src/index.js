@@ -1,4 +1,4 @@
-'use strict';
+'use strict';OA
 var Alexa = require('alexa-sdk');
 var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 
@@ -7,6 +7,7 @@ var alexaReadingString;
 var fuelEfficiency;
 var checkEngineLightStatus;
 var fuelLevel;
+
 
 // for kilometers to miles; 1km = 0.621371 miles
 var kilometersToMiles = 0.621371;
@@ -98,20 +99,25 @@ var handlers = {
 			// fuel efficiency
 			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
 			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
-			
+			alexaReadingString += readFuelEfficiency;
+
 			// fuel level
 			fuelLevel = vehicles[count].FuelLevel.Value;
-			var readFuelLevel = "Current fuel level is at " + fuelLevel.toString() + " percent. ";
+			var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
+			alexaReadingString += readFuelLevel;
+
 			// fuel left
 			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
 			var readFuelLeft = "You have " + fuelLeft.toString() + " gallons left. ";
+			alexaReadingString += readFuelLevel;
 
 			// diagnostics
-			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
-			var instructions = checkEngineLightStatus.Instructions;
-			var description = checkEngineLightStatus.Description;
-			var code = checkEngineLightStatus.Code;
-			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions;
+			checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
+			var instructions = checkEngineLightStatus.Instructions.toString();
+			var description = checkEngineLightStatus.Description.toString();
+			var code = checkEngineLightStatus.Code.toString();
+			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
+			alexaReadingString += readDiagnostics;
 
 			// location
 
@@ -121,13 +127,9 @@ var handlers = {
 			var accidentCheck = vehicles[count].AccidentState.Value;
 			var readAccidentCheck;
 			if (accidentCheck) {
-			    readAccidentCheck = "Your car has been in an accident.";
+			    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
 			}
-
-			// Alexa will read this
-			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. " + 
-			    "Current fuel level is " + fuelLevel + " percent.";
-
+			
 			parentOfThis.emit(':tell', alexaReadingString);
 		    }
 		    count++;
