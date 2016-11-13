@@ -1,0 +1,34 @@
+{
+  "intents": [
+    {
+      "intent": "CarStatus"
+    },
+    {
+      "intent": "WhereIsMyCar"
+    },
+    {
+      "intent": "FuelLevel"
+    },
+    {
+      "intent": "CarHealth"
+    },
+        {
+      "intent": "Accident"
+    },
+    {
+      "intent": "Dead"
+    },
+    {
+      "intent": "Life"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
