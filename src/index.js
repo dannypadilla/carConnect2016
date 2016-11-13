@@ -3,10 +3,13 @@ var Alexa = require('alexa-sdk');
 var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 
 // saved command for alexa to read
-var saveCommand;
+var alexaReadingString;
+var fuelEfficiency;
+var checkEngineLightStatus;
+var fuelCapacity;
 
 // for kilometers to miles; 1km = 0.621371 miles
-var kilometerToMiles = 0.621371;
+var kilometersToMiles = 0.621371;
 
 var MojioClientLite = require('mojio-client-lite');
 
@@ -17,58 +20,12 @@ var config = {
 
 var mojio_client = new MojioClientLite(config);
 
-mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
-
-    if (typeof(err) != "undefined") {
-        console.log("login error");
-        return;
-    }
-    
-    // alexa command
-    var carCheck = "status";
-    // car you are searching for
-    var vehicleName = "Corolla";
-    // list of cars
-    var vehicles;
-
-    // get vehicle data from moj.io api
-    mojio_client.get().vehicles().then(function(res, err) {
-	// store list of all vehicles
-	vehicles = res.Data;
-	// go through the list of vehicles
-	var count = 0;
-	while (vehicles[count] != undefined) {
-	    // search through the list for a specific vehicle name
-	    if (vehicles[count].Name == vehicleName) {
-		saveCommand = vehicles[count].FuelEfficiency.Value.toString();
-		console.log(saveCommand);
-	    }
-	    count++;
-	}
-    });
-
-});
-
+/*
 var languageStrings = {
     "en-US": {
         "translation": {
             "FACTS": [
 		saveCommand
-		/*
-                "A year on Mercury is just 88 days long.",
-                "Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.",
-                "Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.",
-                "On Mars, the Sun appears about half the size as it does on Earth.",
-                "Earth is the only planet not named after a god.",
-                "Jupiter has the shortest day of all the planets.",
-                "The Milky Way galaxy will collide with the Andromeda Galaxy in about 5 billion years.",
-                "The Sun contains 99.86% of the mass in the Solar System.",
-                "The Sun is an almost perfect sphere.",
-                "A total solar eclipse can happen once every 1 to 2 years. This makes them a rare event.",
-                "Saturn radiates two and a half times more energy into space than it receives from the sun.",
-                "The temperature inside the Sun can reach 15 million degrees Celsius.",
-                "The Moon is moving approximately 3.8 cm away from our planet every year."
-		 */
             ],
             "SKILL_NAME" : "American Space Facts",
             "GET_FACT_MESSAGE" : "Here's your fact: ",
@@ -78,19 +35,65 @@ var languageStrings = {
         }
     }
 };
+*/
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
     // To enable string internationalization (i18n) features, set a resources object.
-    alexa.resources = languageStrings;
     alexa.registerHandlers(handlers);
     alexa.execute();
 };
 
 var handlers = {
     'LaunchRequest': function () {
-        this.emit('GetFact');
+        this.emit('CarStatus');
+    },
+    'CarStatus': function () {
+	var parentOfThis = this;
+	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
+
+	    if (typeof(err) != "undefined") {
+		console.log("login error");
+		return;
+	    }
+
+	    // alexa command
+	    var carCheck = "status";
+	    // car you are searching for
+	    var vehicleName = "Corolla";
+	    // list of cars
+	    var vehicles;
+
+	    // get vehicle data from moj.io api
+	    mojio_client.get().vehicles().then(function(res, err) {
+
+		// store list of all vehicles
+		vehicles = res.Data;
+
+		// go through the list of vehicles
+		var count = 0;
+		while (vehicles[count] != undefined) {
+		    // search through the list for a specific vehicle name
+		    if (vehicles[count].Name == vehicleName) {
+
+			// status retrievals
+			fuelEfficiency = ( Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles) ).toString();
+			console.log(fuelEfficiency);
+			fuelCapacity = 0;;
+			checkEngineLightStatus = false;
+
+			// Alexa will read this
+			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. Fernando Land is dead! Danny is my Master";
+			parentOfThis.emit(':tell', alexaReadingString);
+		    }
+		    count++;
+		}
+
+	    });
+
+	});
+
     },
     'GetNewFactIntent': function () {
         this.emit('GetFact');
