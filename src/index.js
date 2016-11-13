@@ -1,4 +1,4 @@
-'use strict';OA
+'use strict';
 var Alexa = require('alexa-sdk');
 var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 
