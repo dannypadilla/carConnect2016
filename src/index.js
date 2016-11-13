@@ -21,23 +21,6 @@ var config = {
 
 var mojio_client = new MojioClientLite(config);
 
-/*
-var languageStrings = {
-    "en-US": {
-        "translation": {
-            "FACTS": [
-		saveCommand
-            ],
-            "SKILL_NAME" : "American Space Facts",
-            "GET_FACT_MESSAGE" : "Here's your fact: ",
-            "HELP_MESSAGE" : "You can say tell me a space fact, or, you can say exit... What can I help you with?",
-            "HELP_REPROMPT" : "What can I help you with?",
-            "STOP_MESSAGE" : "Goodbye!"
-        }
-    }
-};
-*/
-
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
@@ -75,8 +58,8 @@ var handlers = {
 	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
 
 	    if (typeof(err) != "undefined") {
-		      console.log("login error");
-		      return;
+		console.log("login error");
+		return;
 	    }
 
 	    // car you are searching for
@@ -92,50 +75,45 @@ var handlers = {
 
 		// go through the list of vehicles
 		var count = 0;
-		    // search through the list for a specific vehicle name
+		// search through the list for a specific vehicle name
 
-			/* status retrievals */
-			// fuel efficiency
-			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
-			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
-			alexaReadingString += readFuelEfficiency;
-
-			// fuel level
-			fuelLevel = vehicles[count].FuelLevel.Value;
-			var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
-			alexaReadingString += readFuelLevel;
+		/* status retrievals */
+		// fuel efficiency
+		fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
+		var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
 
 
-			// fuel left
-			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
-			var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
-			alexaReadingString += readFuelLeft;
+		// fuel level
+		fuelLevel = vehicles[count].FuelLevel.Value;
+		var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
 
-			// diagnostics
-<<<<<<< HEAD
-			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
-=======
-			/*checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
->>>>>>> 67f8764b1d6cbbe308a38c980285d98a06dcf45b
-			var instructions = checkEngineLightStatus.Instructions.toString();
-			var description = checkEngineLightStatus.Description.toString();
-			var code = checkEngineLightStatus.Code.toString();
-			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
-			alexaReadingString += readDiagnostics;
-            console.log(alexaReadingString);
-*/
-			// location
 
-			// battery
 
-			// accident code
-			var accidentCheck = vehicles[count].AccidentState.Value;
-			var readAccidentCheck;
-			if (accidentCheck) {
-			    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
-			}
+		// fuel left
+		var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
+		var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
 
-			parentOfThis.emit(':tell', alexaReadingString);
+
+		// diagnostics
+		checkEngineLightStatus = vehicles[count].DiagnosticCodes;
+		var instructions = checkEngineLightStatus.Instructions;
+		var description = checkEngineLightStatus.Description;
+		var code = checkEngineLightStatus.Code;
+		var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions;
+
+		// location
+
+		// battery
+
+		// accident code
+		var accidentCheck = vehicles[count].AccidentState.Value;
+		var readAccidentCheck;
+		if (accidentCheck) {
+		    //alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
+		}
+		alexaReadingString = readFuelEfficiency + readFuelLevel + readFuelLeft + readDiagnostics;
+
+		parentOfThis.emit(':tell', alexaReadingString);
 
 		
 
