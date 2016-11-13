@@ -52,6 +52,21 @@ var handlers = {
     'Fuel Level': function() {
 	
     },
+    'WhereIsMyCar': function() {
+	
+    },
+    'CarHealth': function() {
+	
+    },
+    'Accident': function() {
+	
+    },
+    'Dead': function() {
+	
+    },
+    'Life': function() {
+	
+    },
     'CarStatus': function () {
 	var parentOfThis = this;
 	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
