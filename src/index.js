@@ -62,10 +62,11 @@ var handlers = {
 	
     },
     'Dead': function() {
+        this.emit(':tell', "YOU ARE DEAD!");
 	
     },
     'Life': function() {
-	
+        this.emit(':tell', "The answer of life, the universe, and everything. Is 42!");
     },
     'CarStatus': function () {
 	var parentOfThis = this;
