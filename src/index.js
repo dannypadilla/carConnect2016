@@ -3,7 +3,7 @@ var Alexa = require('alexa-sdk');
 var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 
 // saved command for alexa to read
-var alexaReadingString;
+var alexaReadingString="";
 var fuelEfficiency;
 var checkEngineLightStatus;
 var fuelLevel;
@@ -100,16 +100,19 @@ var handlers = {
 			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
 			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
 			alexaReadingString += readFuelEfficiency;
+            console.log(alexaReadingString);
 
 			// fuel level
 			fuelLevel = vehicles[count].FuelLevel.Value;
 			var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
 			alexaReadingString += readFuelLevel;
+            console.log(alexaReadingString);
 
 			// fuel left
 			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
-			var readFuelLeft = "You have " + fuelLeft.toString() + " gallons left. ";
-			alexaReadingString += readFuelLevel;
+			var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
+			alexaReadingString += readFuelLeft;
+            console.log(alexaReadingString);
 
 			// diagnostics
 			checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
@@ -118,6 +121,7 @@ var handlers = {
 			var code = checkEngineLightStatus.Code.toString();
 			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
 			alexaReadingString += readDiagnostics;
+            console.log(alexaReadingString);
 
 			// location
 
