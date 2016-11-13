@@ -92,38 +92,34 @@ var handlers = {
 
 		// go through the list of vehicles
 		var count = 0;
-		while (vehicles[count] != undefined) {
 		    // search through the list for a specific vehicle name
-		    if (vehicles[count].Name == vehicleName) {
 
 			/* status retrievals */
 			// fuel efficiency
 			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
 			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
 			alexaReadingString += readFuelEfficiency;
-            console.log(alexaReadingString);
 
 			// fuel level
 			fuelLevel = vehicles[count].FuelLevel.Value;
 			var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
 			alexaReadingString += readFuelLevel;
-            console.log(alexaReadingString);
+
 
 			// fuel left
 			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
 			var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
 			alexaReadingString += readFuelLeft;
-            console.log(alexaReadingString);
 
 			// diagnostics
-			checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
+			/*checkEngineLightStatus = vehicles[count].DiagnosticCodes.toString();
 			var instructions = checkEngineLightStatus.Instructions.toString();
 			var description = checkEngineLightStatus.Description.toString();
 			var code = checkEngineLightStatus.Code.toString();
 			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
 			alexaReadingString += readDiagnostics;
             console.log(alexaReadingString);
-
+*/
 			// location
 
 			// battery
@@ -136,9 +132,8 @@ var handlers = {
 			}
 
 			parentOfThis.emit(':tell', alexaReadingString);
-		    }
-		    count++;
-		}
+
+		
 
 	    });
 
