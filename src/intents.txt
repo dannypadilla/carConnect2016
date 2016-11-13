@@ -10,6 +10,18 @@
       "intent": "FuelLevel"
     },
     {
+      "intent": "CarHealth"
+    },
+        {
+      "intent": "Accident"
+    },
+    {
+      "intent": "Dead"
+    },
+    {
+      "intent": "Life"
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     },
     {
