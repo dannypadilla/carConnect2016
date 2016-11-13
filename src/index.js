@@ -92,25 +92,32 @@ var handlers = {
 		while (vehicles[count] != undefined) {
 		    // search through the list for a specific vehicle name
 		    if (vehicles[count].Name == vehicleName) {
+			
+			alexaReadingString = readFuelEfficiency + readFuelLevel + readFuelLeft + readDiagnostics;
 
 			/* status retrievals */
 			// fuel efficiency
 			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
 			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
-			
+			alexaReadingString += readFuelEfficiency;
+
 			// fuel level
 			fuelLevel = vehicles[count].FuelLevel.Value;
 			var readFuelLevel = "Current fuel level is at " + fuelLevel.toString() + " percent. ";
+			alexaReadingString += readFuelLevel;
+
 			// fuel left
 			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
 			var readFuelLeft = "You have " + fuelLeft.toString() + " gallons left. ";
+			alexaReadingString += readFuelLevel;
 
 			// diagnostics
 			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
 			var instructions = checkEngineLightStatus.Instructions;
 			var description = checkEngineLightStatus.Description;
 			var code = checkEngineLightStatus.Code;
-			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions;
+			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
+			alexaReadingString += readDiagnostics;
 
 			// location
 
@@ -120,13 +127,9 @@ var handlers = {
 			var accidentCheck = vehicles[count].AccidentState.Value;
 			var readAccidentCheck;
 			if (accidentCheck) {
-			    readAccidentCheck = "Your car has been in an accident.";
+			    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
 			}
-
-			// Alexa will read this
-			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. " + 
-			    "Current fuel level is " + fuelLevel + " percent.";
-
+			
 			parentOfThis.emit(':tell', alexaReadingString);
 		    }
 		    count++;
