@@ -96,3 +96,5 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
+
+# nodes mod
