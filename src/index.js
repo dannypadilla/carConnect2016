@@ -127,7 +127,7 @@ var handlers = {
 			var accidentCheck = vehicles[count].AccidentState.Value;
 			var readAccidentCheck;
 			if (accidentCheck) {
-			    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
+			    alexaReadingString += "Your car has been in an accident. ";
 			}
 			
 			parentOfThis.emit(':tell', alexaReadingString);
