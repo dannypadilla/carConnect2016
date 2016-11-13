@@ -6,7 +6,7 @@ var APP_ID = undefined;  // TODO replace with your app ID (OPTIONAL).
 var alexaReadingString;
 var fuelEfficiency;
 var checkEngineLightStatus;
-var fuelCapacity;
+var fuelLevel;
 
 // for kilometers to miles; 1km = 0.621371 miles
 var kilometersToMiles = 0.621371;
@@ -49,6 +49,9 @@ var handlers = {
     'LaunchRequest': function () {
         this.emit('CarStatus');
     },
+    'Fuel Level': function() {
+	
+    },
     'CarStatus': function () {
 	var parentOfThis = this;
 	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
@@ -58,8 +61,6 @@ var handlers = {
 		return;
 	    }
 
-	    // alexa command
-	    var carCheck = "status";
 	    // car you are searching for
 	    var vehicleName = "Corolla";
 	    // list of cars
@@ -79,12 +80,15 @@ var handlers = {
 
 			// status retrievals
 			fuelEfficiency = ( Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles) ).toString();
-			console.log(fuelEfficiency);
-			fuelCapacity = 0;;
+			
+			
+			fuelLevel = vehicles[count].FuelLevel.Value.toString();
 			checkEngineLightStatus = false;
 
 			// Alexa will read this
-			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. Fernando Land is dead! Danny is my Master";
+			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon." + 
+			    "Current fuel level is " + fuelLevel + " percent.";
+
 			parentOfThis.emit(':tell', alexaReadingString);
 		    }
 		    count++;
