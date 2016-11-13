@@ -92,8 +92,6 @@ var handlers = {
 		while (vehicles[count] != undefined) {
 		    // search through the list for a specific vehicle name
 		    if (vehicles[count].Name == vehicleName) {
-			
-			alexaReadingString = readFuelEfficiency + readFuelLevel + readFuelLeft + readDiagnostics;
 
 			/* status retrievals */
 			// fuel efficiency
