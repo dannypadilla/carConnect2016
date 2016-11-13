@@ -78,15 +78,38 @@ var handlers = {
 		    // search through the list for a specific vehicle name
 		    if (vehicles[count].Name == vehicleName) {
 
-			// status retrievals
-			fuelEfficiency = ( Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles) ).toString();
+			/* status retrievals */
+			// fuel efficiency
+			fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
+			var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
 			
-			
-			fuelLevel = vehicles[count].FuelLevel.Value.toString();
-			checkEngineLightStatus = false;
+			// fuel level
+			fuelLevel = vehicles[count].FuelLevel.Value;
+			var readFuelLevel = "Current fuel level is at " + fuelLevel.toString() + " percent. ";
+			// fuel left
+			var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
+			var readFuelLeft = "You have " + fuelLeft.toString() + " gallons left. ";
+
+			// diagnostics
+			checkEngineLightStatus = vehicles[count].DiagnosticCodes;
+			var instructions = checkEngineLightStatus.Instructions;
+			var description = checkEngineLightStatus.Description;
+			var code = checkEngineLightStatus.Code;
+			var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions;
+
+			// location
+
+			// battery
+
+			// accident code
+			var accidentCheck = vehicles[count].AccidentState.Value;
+			var readAccidentCheck;
+			if (accidentCheck) {
+			    readAccidentCheck = "Your car has been in an accident.";
+			}
 
 			// Alexa will read this
-			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon." + 
+			alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. " + 
 			    "Current fuel level is " + fuelLevel + " percent.";
 
 			parentOfThis.emit(':tell', alexaReadingString);
