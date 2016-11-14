@@ -96,9 +96,9 @@ var handlers = {
 
 		// diagnostics
 		checkEngineLightStatus = vehicles[count].DiagnosticCodes;
-		var instructions = checkEngineLightStatus.Instructions;
-		var description = checkEngineLightStatus.Description;
-		var code = checkEngineLightStatus.Code;
+		var instructions = checkEngineLightStatus[0].Instructions;
+		var description = checkEngineLightStatus[0].Description;
+		var code = checkEngineLightStatus[0].Code;
 		var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions;
 
 		// location
@@ -109,7 +109,7 @@ var handlers = {
 		var accidentCheck = vehicles[count].AccidentState.Value;
 		var readAccidentCheck;
 		if (accidentCheck) {
-		    //alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
+		    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
 		}
 		alexaReadingString = readFuelEfficiency + readFuelLevel + readFuelLeft + readDiagnostics;
 
