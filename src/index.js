@@ -33,16 +33,99 @@ var handlers = {
     'LaunchRequest': function () {
         this.emit('CarStatus');
     },
-    'Fuel Level': function() {
+    'FuelLevel': function() {
+	
+	var parentOfThis = this;
+	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
+
+	    if (typeof(err) != "undefined") {
+		console.log("login error");
+		return;
+	    }
+
+	    // car you are searching for
+	    var vehicleName = "Corolla";
+	    // list of cars
+	    var vehicles;
+
+	    // get vehicle data from moj.io api
+	    mojio_client.get().vehicles().then(function(res, err) {
+
+		// store list of all vehicles
+		vehicles = res.Data;
+
+		// go through the list of vehicles
+		var count = 0;
+		// search through the list for a specific vehicle name
+
+		/* status retrievals */
+
+		// fuel level
+		fuelLevel = vehicles[count].FuelLevel.Value;
+		var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
+
+		// fuel efficiency
+		fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
+		var readFuelEfficiency = "Fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
+
+		// fuel left
+		var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
+		var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
+
+		alexaReadingString = readFuelLevel + readFuelEfficiency + readFuelLeft;
+
+		parentOfThis.emit(':tell', alexaReadingString);
+
+	    });
+
+	});
 
     },
     'WhereIsMyCar': function() {
-
+	
     },
     'CarHealth': function() {
-
+	
     },
     'Accident': function() {
+
+	var parentOfThis = this;
+	mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res, err) {
+
+	    if (typeof(err) != "undefined") {
+		console.log("login error");
+		return;
+	    }
+
+	    // car you are searching for
+	    var vehicleName = "Corolla";
+	    // list of cars
+	    var vehicles;
+
+	    // get vehicle data from moj.io api
+	    mojio_client.get().vehicles().then(function(res, err) {
+		// store list of all vehicles
+		vehicles = res.Data;
+		// go through the list of vehicles
+		var count = 0;
+		// search through the list for a specific vehicle name
+
+		/* status retrievals */
+
+		// accident code
+		var accidentCheck = vehicles[count].AccidentState.Value;
+		var readAccidentCheck = "No accidents reported. Thank God. ";
+		if (accidentCheck) {
+		    readAccidentCheck = "Your car has been in an accident. ";
+		}
+
+		alexaReadingString = readAccidentCheck;
+
+		parentOfThis.emit(':tell', alexaReadingString);
+
+	    });
+
+	});
 
     },
     'Dead': function() {
@@ -75,24 +158,20 @@ var handlers = {
 
 		// go through the list of vehicles
 		var count = 0;
-		// search through the list for a specific vehicle name
 
 		/* status retrievals */
-		// fuel efficiency
-		fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
-		var readFuelEfficiency = "Current fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
-
 
 		// fuel level
 		fuelLevel = vehicles[count].FuelLevel.Value;
 		var readFuelLevel = "Current fuel level is at " + (Math.floor(fuelLevel) ).toString() + " percent. ";
 
+		// fuel efficiency
+		fuelEfficiency = Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles);
+		var readFuelEfficiency = "Fuel efficiency is " + fuelEfficiency.toString() + " miles per gallon. ";
 
-
-		// fuel left
+		// fuel remaining
 		var fuelLeft = Math.floor( (fuelLevel/100) * 13 * fuelEfficiency);
 		var readFuelLeft = "You have " + fuelLeft.toString() + " miles left till next fill. ";
-
 
 		// diagnostics
 		checkEngineLightStatus = vehicles[count].DiagnosticCodes;
@@ -107,15 +186,13 @@ var handlers = {
 
 		// accident code
 		var accidentCheck = vehicles[count].AccidentState.Value;
-		var readAccidentCheck;
+		var readAccidentCheck = "No accidents reported. Thank God. ";
 		if (accidentCheck) {
-		    alexaReadingString += readAccidentCheck = "Your car has been in an accident. ";
+		    readAccidentCheck = "Your car has been in an accident. ";
 		}
-		alexaReadingString = readFuelEfficiency + readFuelLevel + readFuelLeft + readDiagnostics;
+		alexaReadingString = readAccidentCheck + readFuelLevel + readFuelEfficiency + readFuelLeft + readDiagnostics;
 
 		parentOfThis.emit(':tell', alexaReadingString);
-
-		
 
 	    });
 
