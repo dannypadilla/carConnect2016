@@ -47,15 +47,20 @@ mojio_client.authorize('disavowed10@gmail.com','fernieLand69').then(function(res
 
 		// status retrievals
 		fuelEfficiency = ( Math.floor( vehicles[count].FuelEfficiency.Value * kilometersToMiles) ).toString();
+		// diagnostics
+		checkEngineLightStatus = vehicles[count].DiagnosticCodes;
+		var instructions = checkEngineLightStatus.Instructions;
+		var description = checkEngineLightStatus.Description;
+		var code = checkEngineLightStatus.Code;
+		var readDiagnostics = "There is a check engine light code " + code + ". " + description + ". " + instructions + " ";
+		alexaReadingString += readDiagnostics;
+		console.log(alexaReadingString);
 		
 		
-		console.log(fuelCapacity = vehicles[count]);
+		console.log(vehicles[count]);
 		checkEngineLightStatus = false;
-
 		// Alexa will read this
-		alexaReadingString = "Current fuel efficiency is " + fuelEfficiency + " miles per gallon. Fernando Land is dead! Danny is my Master";
-
-		//console.log(alexaReadingString);
+		console.log(alexaReadingString);
 
 	    }
 	    count++;
